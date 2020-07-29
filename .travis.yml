@@ -16,7 +16,7 @@ after_success:
     - docker build -t nobunee/complex-nginx ./nginx
     - docker build -t nobunee/complex-server ./server
     - docker build -t nobunee/complex-worker ./worker
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --passsword-stdin
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     - docker push nobunee/complex-client
     - docker push nobunee/complex-nginx
     - docker push nobunee/complex-server
