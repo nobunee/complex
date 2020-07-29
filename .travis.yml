@@ -1,0 +1,23 @@
+language: generic 
+
+sudo: required
+
+services:
+    - docker
+
+before_install: 
+    - docker build -t nobunee/complex-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true nobunee/complex-test npm test
+
+after_success:
+    - docker build -t nobunee/complex-client ./client
+    - docker build -t nobunee/complex-nginx ./nginx
+    - docker build -t nobunee/complex-server ./server
+    - docker build -t nobunee/complex-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --passsword-stdin
+    - docker push nobunee/complex-client
+    - docker push nobunee/complex-nginx
+    - docker push nobunee/complex-server
+    - docker push nobunee/complex-worker
